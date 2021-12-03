@@ -1,6 +1,8 @@
 from datamanager import doggonames, doggobirth, doggogender
 
 def getDoggo(doggoname):
-    for i in range(len(doggoname)):
+    doggoList = []
+    for i in range(len(doggonames)):
         if doggonames[i] == doggoname:
-            print(f'{doggonames[i]} {doggobirth[i]} {doggogender[i]}')
+            doggoList.append([doggonames[i], doggobirth[i], doggogender[i]])
+    return doggoList
