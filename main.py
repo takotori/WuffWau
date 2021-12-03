@@ -1,20 +1,37 @@
-import click
-import requests
-import csv
+import argparse
+import rich
+from wuffCreate import createDoggos
+from wuffFind import getDoggo
+from wuffStats import getDoggoNameLengths, getFamousDoggos, getMaleFemaleDoggoCount
+from datamanager import getData
+
+def run(create, info, stats, find):
+    getData()
+
+    if create:
+        createDoggos(create)
+    elif info:
+        print("help")
+    elif stats:
+        print("test")
+    elif find:
+        getDoggo(find)
+    else:
+        print('No flag given.')
 
 
-def getData():
-    res = requests.get("https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2").json()
+def get_parser():
+    parser = argparse.ArgumentParser()
+    g = parser.add_mutually_exclusive_group()
+    g.add_argument("-c", "--create", help = "Create a new dog")
+    g.add_argument("-i", "--info", help = "Get some help")
+    g.add_argument("-s", "--stats", help = "Fetch doggo stats")
+    g.add_argument("-f", "--find", help = "Find a dog by name")
+    return parser
 
-    map = {}
-    for data in res["result"]["resources"]:
-        map[data["title"]["de"][0:4]] = data["download_url"]
-    response = requests.get(map[max(map.keys())]).text.splitlines()
-    return csv.DictReader(response, ["Hundename", "Geburtsjahr", "Geschlecht"])
-
-
-def main():
-    print("test")
+def main(args=None):
+    args = get_parser().parse_args(args)
+    run(create = args.create, info = args.info, stats = args.stats, find = args.find)
 
 if __name__ == '__main__':
     main()
