@@ -13,7 +13,7 @@ def createDoggos(destination=None):
 def getDoggoPicture(destination, doggoname, doggobirthyear):
     url = requests.get("https://random.dog/woof.json").json()["url"]
 
-    if destination == 1:
+    if destination is None:
         destination = os.getcwd()
 
     pathstr = f'{destination}\\{doggoname}_{doggobirthyear}.{url.split(".")[-1]}'

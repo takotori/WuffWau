@@ -5,8 +5,9 @@ doggonames = []
 doggobirth = []
 doggogender = []
 
-def getData():
-    res = requests.get("https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2").json()
+def getData(year):
+    res = requests.get(
+        "https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2").json()
     map = {}
 
     for data in res["result"]["resources"]:
