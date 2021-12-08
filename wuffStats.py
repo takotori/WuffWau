@@ -6,10 +6,10 @@ def getDoggoNameLengths():
     shortname = set()
 
     for doggo in doggonames:
-        if len(doggo["Hundename"]) == max(doggonames):
-            longname.add(doggo["Hundename"])
-        elif len(doggo["Hundename"]) == min(doggonames):
-            shortname.add(doggo["Hundename"])
+        if len(doggo) == len(max(doggonames, key=len)):
+            longname.add(doggo)
+        elif len(doggo) == len(min(doggonames, key=len)):
+            shortname.add(doggo)
     return {"longestName": longname, "shortestName": shortname}
 
 def getFamousDoggos():
@@ -18,12 +18,8 @@ def getFamousDoggos():
         famousdoggo.append(doggo[0])
     return famousdoggo
 
+
 def getMaleFemaleDoggoCount():
-    male = 0
-    female = 0
-    for doggo in doggogender:
-        if doggo["Geschlecht"] == "m":
-            male += 1
-        else:
-            female += 1
-    return {"male": male, "female": female}
+    male = doggogender.count("m")
+    female = doggogender.count("w")
+    return {"male": male, "female": female, "unknown": len(doggogender) - male - female}
