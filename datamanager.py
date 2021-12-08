@@ -20,13 +20,14 @@ def getData(year):
 
     if year is not None:
         if year in map:
-            response = requests.get(map[year]).text.splitlines()
+            request = requests.get(map[year]).text.splitlines()
         else:
             raise ValueError(f'No data for year {year} available')
     else:
-        response = requests.get(map[max(map.keys())]).text.splitlines()
+        request = requests.get(map[max(map.keys())])
 
-    insertToLists(response)
+    request.encoding = "utf-8"
+    insertToLists(request.text.splitlines())
 
 
 def insertToLists(response):

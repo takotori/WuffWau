@@ -5,22 +5,6 @@ from wuffCreate import createDoggos
 from wuffFind import getDoggo
 from wuffStats import getDoggoNameLengths, getFamousDoggos, getMaleFemaleDoggoCount
 from datamanager import getData
-from random import choice
-
-emoji = [":bear:", ":robot:", ":cherry_blossom:", ":comet:", ":hammer:", ":star2:", ":corn:", ":izakaya_lantern:",
-         ":apple:", ":heart:", ":anchor:", ":crescent_moon:", ":smiling_imp:", ":kiss:", ":ambulance:",
-         ":evergreen_tree:", ":rice_ball:", ":people_holding_hands:", ":croissant:", ":butterfly:", ":fire:",
-         ":crossed_swords:", ":pirate_flag:", ":dizzy:", ":sheep:", ":space_invader:", ":candy:", ":snowman:",
-         ":peach:", ":leo:", ":circus_tent:", ":flying_saucer:", ":rose:", ":test_tube:", ":fishing_pole_and_fish:",
-         ":leaves:", ":skull:", ":chicken:", ":octopus:", ":trident:", ":mag:", ":gem:", ":ringed_planet:", ":herb:",
-         ":hourglass_flowing_sand:", ":owl:", ":game_die:", ":game_die:", ":chipmunk:", ":crystal_ball:", ":art:",
-         ":woman_zombie:", ":fallen_leaf:", ":peacock:"]
-
-
-def getRandomEmoji():
-    # todo some emojis need more than 1 thing
-    return choice(emoji)
-
 
 @click.group()
 @click.option('-y', '--year')
@@ -41,7 +25,6 @@ def find(doggoname):
 @cli.command()
 @click.option('-o', '--outputdir')
 def create(outputdir):
-    # todo test with custom outputdir
     doggo = createDoggos(outputdir)
     print("Here's your new dog!\n"
           f'Name: {doggo[0]}\n'
@@ -52,19 +35,23 @@ def create(outputdir):
 
 @cli.command()
 def stats():
+    console = Console()
     names = getDoggoNameLengths()
     genderCount = getMaleFemaleDoggoCount()
-    famousDoggos = ', '.join(getFamousDoggos())
-    longestNames = ', '.join(names["longestName"])
-    shortestNames = ', '.join(names["shortestName"])
-    print(f'Shortest names: {shortestNames}')
-    print(f'Longest names: {longestNames}')
-    print('----------------------------------------------------------')
-    print(f'Most common names: {famousDoggos}')
-    print('----------------------------------------------------------')
-    print(f'Male: {genderCount["male"]}')
-    print(f'Female: {genderCount["female"]}')
-    print(f'Unknown: {genderCount["unknown"]}')
+    console.rule("[bold red] Longest/Shortest Names")
+
+    print(f'Shortest names: {", ".join(names["shortestName"])}\n'
+          f'Longest names: {", ".join(names["longestName"])}')
+
+    console.rule("[bold red] Top 10 common names")
+
+    print(f'Most common names: {", ".join(getFamousDoggos())}')
+
+    console.rule("[bold red] Gender Count")
+
+    print(f'Male: {genderCount["male"]}\n'
+          f'Female: {genderCount["female"]}\n'
+          f'Unknown: {genderCount["unknown"]}')
 
 
 def buildTable(allDoggos):
@@ -78,7 +65,6 @@ def buildTable(allDoggos):
                       f'{doggo[1]}',
                       f'{doggo[2]}')
     console.print(table)
-
 
 if __name__ == '__main__':
     cli()
