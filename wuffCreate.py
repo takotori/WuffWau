@@ -19,6 +19,12 @@ def getDoggoPicture(destination, doggoname, doggobirthyear):
     pathstr = f'{destination}\\{doggoname}_{doggobirthyear}.{url.split(".")[-1]}'
     path = Path(pathstr)
 
+    try:
+        with open(path, 'x') as f:
+            pass
+    except OSError as e:
+        raise SystemExit(e)
+
     with open(path, 'wb') as file:
         shutil.copyfileobj(requests.get(url, stream=True).raw, file)
     return pathstr

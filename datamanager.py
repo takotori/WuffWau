@@ -5,15 +5,31 @@ doggonames = []
 doggobirth = []
 doggogender = []
 
+
 def getData(year):
-    res = requests.get(
-        "https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2").json()
+    try:
+        res = requests.get(
+            "https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2")
+        res.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
+
     map = {}
-
-    for data in res["result"]["resources"]:
+    for data in res.json()["result"]["resources"]:
         map[data["title"]["de"][0:4]] = data["download_url"]
-    response = requests.get(map[max(map.keys())]).text.splitlines()
 
+    if year is not None:
+        if year in map:
+            response = requests.get(map[year]).text.splitlines()
+        else:
+            raise ValueError(f'No data for year {year} available')
+    else:
+        response = requests.get(map[max(map.keys())]).text.splitlines()
+
+    insertToLists(response)
+
+
+def insertToLists(response):
     for doggo in csv.DictReader(response, ["Hundename", "Geburtsjahr", "Geschlecht"]):
         doggonames.append(doggo["Hundename"])
         doggobirth.append(doggo["Geburtsjahr"])

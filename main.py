@@ -5,7 +5,6 @@ from wuffCreate import createDoggos
 from wuffFind import getDoggo
 from wuffStats import getDoggoNameLengths, getFamousDoggos, getMaleFemaleDoggoCount
 from datamanager import getData
-
 from random import choice
 
 emoji = [":bear:", ":robot:", ":cherry_blossom:", ":comet:", ":hammer:", ":star2:", ":corn:", ":izakaya_lantern:",
@@ -27,22 +26,16 @@ def getRandomEmoji():
 @click.option('-y', '--year')
 def cli(year):
     getData(year)
-    pass
 
 
 @cli.command()
 @click.argument('doggoname')
 def find(doggoname):
-    console = Console()
-    table = Table(title="The bestest doggos ever")
-    table.add_column("Doggoname", justify="center", style="magenta")
-    table.add_column("Geburtsdatum", justify="center", style="yellow")
-    table.add_column("Geschlecht", justify="center", style="green")
-    for doggo in getDoggo(doggoname):
-        table.add_row(f'{doggo[0]}',
-                      f'{doggo[1]}',
-                      f'{doggo[2]}')
-    console.print(table)
+    allDoggos = getDoggo(doggoname)
+    if not allDoggos:
+        print(f'No dogs with name {doggoname} found')
+        return
+    buildTable(allDoggos)
 
 
 @cli.command()
@@ -72,6 +65,19 @@ def stats():
     print(f'Male: {genderCount["male"]}')
     print(f'Female: {genderCount["female"]}')
     print(f'Unknown: {genderCount["unknown"]}')
+
+
+def buildTable(allDoggos):
+    console = Console()
+    table = Table(title="The bestest doggos ever")
+    table.add_column("Doggoname", justify="center", style="magenta")
+    table.add_column("Geburtsdatum", justify="center", style="yellow")
+    table.add_column("Geschlecht", justify="center", style="green")
+    for doggo in allDoggos:
+        table.add_row(f'{doggo[0]}',
+                      f'{doggo[1]}',
+                      f'{doggo[2]}')
+    console.print(table)
 
 
 if __name__ == '__main__':
