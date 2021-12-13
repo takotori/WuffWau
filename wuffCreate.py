@@ -20,11 +20,8 @@ def getDoggoPicture(destination, doggoname, doggobirthyear):
     path = Path(pathstr)
 
     try:
-        with open(path, 'x') as f:
-            pass
+        with open(path, 'wb') as file:
+            shutil.copyfileobj(requests.get(url, stream=True).raw, file)
     except OSError as e:
         raise SystemExit(e)
-
-    with open(path, 'wb') as file:
-        shutil.copyfileobj(requests.get(url, stream=True).raw, file)
     return pathstr

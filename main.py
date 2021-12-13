@@ -1,10 +1,10 @@
 import click
+from datamanager import getData
 from rich.table import Table
 from rich.console import Console
 from wuffCreate import createDoggos
 from wuffFind import getDoggo
 from wuffStats import getDoggoNameLengths, getFamousDoggos, getMaleFemaleDoggoCount
-from datamanager import getData
 
 @click.group()
 @click.option('-y', '--year')

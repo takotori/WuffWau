@@ -7,9 +7,9 @@ doggogender = []
 
 
 def getData(year):
+    url = "https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2"
     try:
-        res = requests.get(
-            "https://ckan.opendata.swiss/api/3/action/package_show?id=hundenamen-aus-dem-hundebestand-der-stadt-zurich2")
+        res = requests.get(url)
         res.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
@@ -20,7 +20,7 @@ def getData(year):
 
     if year is not None:
         if year in map:
-            request = requests.get(map[year]).text.splitlines()
+            request = requests.get(map[year])
         else:
             raise ValueError(f'No data for year {year} available')
     else:
