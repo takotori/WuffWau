@@ -26,7 +26,7 @@ def getData(year):
     else:
         request = requests.get(map[max(map.keys())])
 
-    request.encoding = "utf-8"
+    request.encoding = "utf-8-sig"
     insertToLists(request.text.splitlines())
 
 
